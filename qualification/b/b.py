@@ -16,7 +16,6 @@ def get_min_time(plates):
     plates.sort()
     time_taken = 0
     min_time = plates[-1]
-    one_times = 0
     while True:
         largest = plates.pop()
         splitted_1, splitted_2 = split_even(largest)
@@ -28,10 +27,7 @@ def get_min_time(plates):
         time_taken += 1
 
         if largest == 1:
-            one_times += 1
-            if one_times == 3:
-                return min_time
-
+            return min_time
 
 def split_even(num):
     half = num / 2
