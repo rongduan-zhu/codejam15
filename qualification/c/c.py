@@ -45,22 +45,21 @@ def can_split(repeated_str, strlen):
         return "NO"
 
 def get_combined(substr):
-    if substr in lookup:
-        return lookup[substr]
+    i = -1
+    while not (substr in lookup):
+        while not (substr[:i] in lookup):
+            i -= 1
 
-    subsubstr = get_combined(substr[:-1])
-    if len(subsubstr) and subsubstr[0] == '-':
-        subsubstr_combined = lookup[subsubstr[1:] + substr[-1]]
-        if subsubstr_combined[0] == '-':
-            lookup[substr] = subsubstr_combined[1:]
-            return lookup[substr]
-        else:
-            lookup[substr] = '-' + subsubstr_combined
-            return lookup[substr]
-    else:
-        subsubstr_combined = lookup[subsubstr + substr[-1]]
-        lookup[substr] = subsubstr_combined
-        return lookup[substr]
+        for j in xrange(i, 0):
+            subsubstr = lookup[substr[:j]]
+            if len(subsubstr) and subsubstr[0] == '-':
+                ns_subsubstr = lookup[subsubstr[1:] + substr[j]]
+                subsubstr_combined = add_str('-', ns_subsubstr)
+                lookup[substr[:j + 1]] = subsubstr_combined
+            else:
+                ns_subsubstr = lookup[subsubstr + substr[j]]
+                lookup[substr[:j + 1]] = ns_subsubstr
+    return lookup[substr]
 
 def get_x(substr, x, strlen):
     multiple = len(substr) / strlen
